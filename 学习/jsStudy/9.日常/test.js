@@ -1,1 +1,3 @@
-console.log(100);
+const randomBoolean = _ => Math.random() >= 0.5;
+
+console.log(randomBoolean());
