@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <p to="/user/my">
+            <router-link to="/user/XK">XK</router-link>
+            <router-link to="/user/HM">HM</router-link>
+            <router-link to="/user/profile">XK profile</router-link>
+            <router-link to="/user/profile">HM profile</router-link>
+        </p>
+        <router-view></router-view>
+    </div>
+    <script>
+        const User = {
+            template: `
+                        <div class="user">
+                            <h2>User {{ $route.params.id }}</h2>
+                            <router-view></router-view>
+                        </div>
+                      `,
+        }
+        const UserProfile = {
+            template: `
+                        <div class="user-profile">
+                            <h2>UserProfile {{ $route.params.id }}</h2>
+                        </div>
+                      `,
+        }
+        const UserPosts = {
+            template: `
+                        <div class="user-posts">
+                            <h2>UserPosts {{ $route.params.id }}</h2>
+                        </div>
+                      `,
+        }
+        const routes = [
+            {
+                path: '/user/:id',
+                component: User,
+                children: [{
+                    path: '',
+                    componet: UserPosts
+                }, {
+                    path: 'profile',
+                    componet: UserProfile
+                },
+                {
+                    path: 'posts',
+                    component: UserPosts
+                }]
+            }
+        ];
+        const router = new VueRouter({
+            routes
+        })
+
+        const app = new Vue({
+            router
+        }).$mount('#app')
+    </script>
+</body>
+
+</html>
