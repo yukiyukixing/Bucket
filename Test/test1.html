@@ -4,18 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./test5.js"></script>
     <title>Document</title>
 </head>
 
 <body>
     <script>
-        {
-            var a;
-            // function a() { }
-            var a = 50
+        let a = new Test();
+        class Test{
+            constructor(){
+                this.a = 100
+            }
         }
-        console.log(a);
+        // {
+        //     var a;
+        //     // function a() { }
+        //     var a = 50
+        // }
+        // console.log(a);
         // {
         //     a = 50;
         //     function a() { };
