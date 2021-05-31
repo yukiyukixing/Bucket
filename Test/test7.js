@@ -7,3 +7,19 @@ function(e, t) {
     var n = this._textures.get(e);
     n && (n.dispose(), this._textures.delete(e))
 }
+
+function HelloWorld() {
+    console.log("Hello World");
+}
+
+function HelloWorld() {
+    console.log("Hello World");
+}
+
+function test() {
+    console.log("Hello World");
+}
+
+function HelloWorld() {
+    console.log(123);
+}
