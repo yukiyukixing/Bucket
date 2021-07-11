@@ -5,6 +5,237 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script>
+        // 原型链继承
+        // function A() { }
+        // function B() { }
+        // B.prototype = new A();
+
+        // 盗用构造函数继承
+        // function A() { }
+        // function B() {
+        //     A.call(this);
+        // }
+
+        // 原型式继承
+        // function A(o) {
+        //     function F() { }
+        //     F.prototype = o;
+        //     return new F();
+        // }
+
+        // 寄生式继承
+        // function A(o) {
+        //     const clone = Object.create();
+        //     clone.sayName = function () {
+        //         console.log('小王');
+        //     }
+        //     return clone;
+        // }
+
+        // 1.原型链继承
+        // function A() { }
+        // function B() { }
+        // B.prototype = new A();
+
+        // // 2.经典继承
+        // function A() { }
+        // function B() {
+        //     A.call(this)
+        // }
+
+        // // 3.组合继承
+        // function A() { }
+        // function B() {
+        //     A.call(this)
+        // }
+        // B.prototype = new A();
+
+        // // 原型式继承
+        // function object(o) {
+        //     function F() { };
+        //     F.prototype = o;
+        //     return new F();
+        // }
+
+        // // 寄生式继承
+        // function object(o) {
+        //     const clone = Object.create(o);
+        //     clone.sayName = function () { };
+        //     return clone;
+        // }
+
+        // // 寄生式组合继承
+        // function object(o) {
+        //     function F() { };
+        //     F.prototype = o;
+        //     return new F();
+        // }
+        // function inheritPrototype(B, A) {
+        //     const prototype = object(A.prototype);
+        //     prototype.constructor = B;
+        //     B.prototype = prototype;
+        // }
+        // function A() { };
+        // function B() {
+        //     A.call(this);
+        // };
+
+        // function A() { };
+        // const a = new A();
+        // console.log(a.__proto__ === A.prototype);
+
+        // 手写instanceof，left._proto_===Right.prototype
+        // function myInstanceof(left, Right) {
+        //     left = left._proto_;
+        //     Right = Right.prototype;
+        //     while (true) {
+        //         if (left === null) {
+        //             return false
+        //         }
+        //         if (left === Right) {
+        //             return true
+        //         }
+        //         left = left._proto_;
+        //     }
+        // }
+        // 手写new
+        // function myNew(fn, ...rest) {
+        //     const obj = Object.create(fn.prototype);
+        //     const res = fn.apply(obj, rest);
+        //     return res instanceof Object ? res : obj
+        // }
+
+        // 手写instanceof，抓住实例的原型等于构造函数的原型这点即可
+        // function myInstanceof(left, Right) {
+        //     left = left._proto_;
+        //     Right = Right.prototype;
+        //     while (true) {
+        //         if (left === null) {
+        //             return false;
+        //         }
+        //         if (left === Right) {
+        //             return true;
+        //         }
+        //         left = left._proto_;
+        //     }
+        // }   
+
+        // function myNew(fn, ...rest) {
+        //     const obj = Object.create(fn.prototype);
+        //     const res = fn.apply(this, rest);
+        //     return res instanceof Object ? res : obj;
+        // }
+
+        // function myInstanceof(left, Right) {
+        //     left = left._proto_;
+        //     Right = Right.prototype;
+        //     while (true) {
+        //         if (left === null) {
+        //             return false
+        //         }
+        //         if (left === Right) {
+        //             return true
+        //         }
+        //         left = left._proto_;
+        //     }
+        // }
+
+        // 手写bind
+        // Function.prototype.myBind = function (obj = window, ...rest) {
+        //     const _that = this;
+        //     return function () {
+        //         if (new.target) {
+        //             return _that([...rest, ...arguments])
+        //         } else {
+        //             return _that.apply(obj, [...rest, ...arguments]);
+        //         }
+        //     }
+        // }
+        // 手写bind
+        // Function.prototype.myBind = function (obj = window, ...rest) {
+        //     const _that = this;
+        //     return function () {
+        //         if (new.target) {
+        //             return _that([...rest, ...arguments]);
+        //         } else {
+        //             return _that.apply(obj, [...rest, ...arguments]);
+        //         }
+        //     }
+        // }
+        // 手写instanceof
+        // function myInstanceof(left, Right) {
+        //     left = left.__proto__;
+        //     Right = Right.prototype;
+        //     while (true) {
+        //         if (left === null) {
+        //             return false
+        //         }
+        //         if (left === Right) {
+        //             return true;
+        //         }
+        //         left = left.__proto__;
+        //     }
+        // }
+        // 手写new
+        // function myNew(fn, ...rest) {
+        //     const obj = Object.create(fn);
+        //     const res = fn.apply(obj, rest);
+        //     return res instanceof Object ? res : obj;
+        // }
+        // 手写call
+        // Function.prototype.myCall = function (obj = window, ...rest) {
+        //     obj.fn = this;
+        //     let res;
+        //     res = obj.fn(...rest)
+        //     obj.fn = null;
+        //     return res;
+        // }
+        // function fn() {
+        //     console.log(this.name);
+        // };
+        // const obj = {
+        //     name: '小王'
+        // };
+        // fn.myCall(obj);
+        // fn.call(obj);
+
+        // 手写call
+        // Function.prototype.myCall = function (obj = window, ...rest) {
+        //     obj.fn = this;
+        //     const res = obj.fn(...rest);
+        //     obj.fn = null;
+        //     return res;
+        // }
+
+        // 手写call
+        // Function.prototype.myCall = function (obj = window, ...rest) {
+        //     obj.fn = this;
+        //     const res = obj.fn(...rest);
+        //     obj.fn = null;
+        //     return res;
+        // }
+
+        // 手写apply
+        // Function.prototype.apply = function (obj = window, ...rest) {
+        //     obj.fn = this;
+        //     const res = obj.fn(rest);
+        //     obj.fn = null;
+        //     return res;
+        // }
+
+        // bind
+        // Function.prototype.myBind = function (obj = window, ...rest) {
+        //     const _that = this;
+        //     return function () {
+        //         if (new.target) {
+        //             return new _that([...rest, ...arguments])
+        //         } else {
+        //             return _that.apply(obj, [...rest, ...arguments])
+        //         }
+        //     }
+        // }
+    </script>
 </head>
 
 <body>
