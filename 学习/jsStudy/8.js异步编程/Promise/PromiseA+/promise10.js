@@ -1,14 +1,14 @@
 const pending = 'pending';
 const fulFilled = 'fulFilled';
 const rejected = 'rejected';
-function MyPromise(execute){
+function MyPromise(execute) {
     const that = this;
     that.status = pending;
     that.resolveFn = [];
     that.rejectFn = [];
-    function resolve(value){
+    function resolve(value) {
         setTimeout(_ => {
-            if(that.status === pending){
+            if (that.status === pending) {
                 that.status = fulFilled;
                 that.value = value;
                 that.resolveFn.forEach(f => {
@@ -17,9 +17,9 @@ function MyPromise(execute){
             }
         })
     }
-    function reject(reason){
+    function reject(reason) {
         setTimeout(_ => {
-            if(that.status === pending){
+            if (that.status === pending) {
                 that.status = rejected;
                 that.value = reason;
                 that.rejectFn.forEach(f => {
@@ -29,52 +29,52 @@ function MyPromise(execute){
         })
     }
     try {
-        execute(resolve,reject)
+        execute(resolve, reject)
     } catch (error) {
         reject(error)
     }
 }
-MyPromise.prototype.then = function(onResolve,onReject){
-    if(typeof onResolve !== 'function'){
+MyPromise.prototype.then = function (onResolve, onReject) {
+    if (typeof onResolve !== 'function') {
         onResolve = value => value
     }
-    if(typeof onReject !== 'function'){
+    if (typeof onReject !== 'function') {
         onReject = reason => {
             throw reason
         }
     }
     const that = this;
     let promise;
-    if(that.status === fulFilled){
-        promise = new MyPromise((resolve,reject) => {
+    if (that.status === fulFilled) {
+        promise = new MyPromise((resolve, reject) => {
             setTimeout(_ => {
                 try {
                     let x = onResolve(that.value);
-                    resolvePromise(promise,x,resolve,reject) 
+                    resolvePromise(promise, x, resolve, reject)
                 } catch (error) {
                     reject(error)
                 }
             })
         })
     }
-    if(that.status === rejected){
-        promise = new MyPromise((resolve,reject) => {
+    if (that.status === rejected) {
+        promise = new MyPromise((resolve, reject) => {
             setTimeout(_ => {
                 try {
                     let x = onReject(that.value);
-                    resolvePromise(promise,x,resolve,reject) 
+                    resolvePromise(promise, x, resolve, reject)
                 } catch (error) {
                     reject(error)
                 }
             })
         })
     }
-    if(that.status === pending){
-        promise = new MyPromise((resolve,reject) => {
+    if (that.status === pending) {
+        promise = new MyPromise((resolve, reject) => {
             that.resolveFn.push(_ => {
                 try {
                     let x = onResolve(that.value);
-                    resolvePromise(promise,x,resolve,reject) 
+                    resolvePromise(promise, x, resolve, reject)
                 } catch (error) {
                     reject(error)
                 }
@@ -82,7 +82,7 @@ MyPromise.prototype.then = function(onResolve,onReject){
             that.rejectFn.push(_ => {
                 try {
                     let x = onReject(that.value);
-                    resolvePromise(promise,x,resolve,reject) 
+                    resolvePromise(promise, x, resolve, reject)
                 } catch (error) {
                     reject(error)
                 }
@@ -91,43 +91,43 @@ MyPromise.prototype.then = function(onResolve,onReject){
     }
     return promise
 }
-function resolvePromise(promise,x,resolve,reject){
-    if(x === promise){
+function resolvePromise(promise, x, resolve, reject) {
+    if (x === promise) {
         return reject(new TypeError('x不能等于promise'))
     }
-    if(x instanceof MyPromise){
-        if(x.status === fulFilled){
+    if (x instanceof MyPromise) {
+        if (x.status === fulFilled) {
             resolve(x.value)
-        }else if(x.status === rejected){
+        } else if (x.status === rejected) {
             reject(x.value)
-        }else{
+        } else {
             x.then(y => {
-                resolvePromise(promise,y,resolve,reject)
-            },reject)
+                resolvePromise(promise, y, resolve, reject)
+            }, reject)
         }
-    }else if(x !== null && (typeof x === 'object' || typeof x === 'function')){
+    } else if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
         let executed;
         try {
             let then = x.then;
-            if(typeof then === 'function'){
-                then.call(x,y => {
-                    if(executed) return
+            if (typeof then === 'function') {
+                then.call(x, y => {
+                    if (executed) return
                     executed = true;
-                    resolvePromise(promise,y,resolve,reject)
-                },e => {
-                    if(executed) return
+                    resolvePromise(promise, y, resolve, reject)
+                }, e => {
+                    if (executed) return
                     executed = true;
                     reject(e)
                 })
-            }else{
+            } else {
                 resolve(x)
             }
         } catch (error) {
-            if(executed) return
+            if (executed) return
             executed = true;
             reject(error)
         }
-    }else{
+    } else {
         resolve(x)
     }
 }

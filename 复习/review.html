@@ -235,11 +235,93 @@
         //         }
         //     }
         // }
+
+        // 函数柯里化
+        // function curry(fn) {
+        //     return function (a) {
+        //         return function (b) {
+        //             return fn(a, b)
+        //         }
+        //     }
+        // }
+        // function A(a, b) {
+        //     return a + b
+        // }
+        // console.log(curry(A)(1)(2));
+
+        // function myNew(fn, ...rest) {
+        //     const obj = Object.create(fn.prototype);
+        //     const res = fn.apply(obj, rest);
+        //     return res instanceof Object ? res : obj
+        // }
+
+        // ES6新增了什么？
+        // ES6新增了类，Promise，let和const，模板字符串，对象数组解构，箭头函数，函数参数默认值，代理，展开语法，for...of,for...in
+
+        // 防抖 关键是维护一个timer，然后返回一个函数
+        // function debounce(fn, delay) {
+        //     let timer;
+        //     return function () {
+        //         if (timer) {
+        //             clearTimeout(timer);
+        //         };
+        //         timer = setTimeout(() => {
+        //             fn.apply(this, arguments)
+        //         }, delay)
+        //     }
+        // }
+
+        // 节流 每隔一段时间只执行一次函数
+        // function throttle(fn, delay) {
+        //     let timer;
+        //     return function () {
+        //         if (timer) {
+        //             return
+        //         }
+        //         timer = setTimeout((...args) => {
+        //             fn.apply(this, args);
+        //             timer = null;
+        //         }, delay);
+        //     }
+        // }
+
+        // function deep(obj) {
+        //     const obj1 = Array.isArray(obj) ? [] : {};
+        //     for (const key in obj) {
+        //         if (typeof obj[key] === 'object') {
+        //             obj1[key] = deep(obj[key])
+        //         } else {
+        //             obj1[key] = obj[key]
+        //         }
+        //     }
+        //     return obj1
+        // }
+
+        // new
+        function myNew(fn, ...rest) {
+            const obj = Object.create(fn.prototype);
+            const res = fn.apply(this, rest);
+            return res instanceof Object ? res : obj
+        }
+
     </script>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            border: 1px solid red;
+        }
+
+        .innerBox {
+            border: 1px solid green !important;
+        }
+    </style>
 </head>
 
 <body>
-
+    <div class="center" style="">
+        <div class="innerBox">水平垂直居中</div>
+    </div>
 </body>
 
 </html>
